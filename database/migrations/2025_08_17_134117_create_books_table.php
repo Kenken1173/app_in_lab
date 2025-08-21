@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('book_title');
             $table->string('author');
             $table->date('published_date');
-            $table->string('borrower')->nullable(); //値を入れなくても良い
+            $table->string('borrower');
             $table->string('image_path')->nullable(); //値を入れなくても良い
             $table->string('field')->nullable(); //値を入れなくても良い
             $table->timestamps();
