@@ -30,7 +30,7 @@ class BooksTableSeeder extends Seeder
                 'book_title' => 'サンプル本3',
                 'author' => '著者C',
                 'published_date' => '2018-01-23',
-                'borrower' => null, // 追加
+                'borrower' => '東北花子', // 追加
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

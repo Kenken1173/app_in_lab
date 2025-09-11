@@ -9,7 +9,7 @@ Route::get('/', function () {
         ->whereNotNull('borrower')
         ->where('borrower', '!=', '')
         ->where('borrower', '!=', '借りていない')
-        ->select('book_title', 'borrower')
+        ->select('id', 'book_title', 'borrower', 'updated_at')
         ->orderBy('book_title')
         ->get();
 
@@ -21,9 +21,17 @@ Route::get('/borrowing-records', function () {
         ->whereNotNull('borrower')
         ->where('borrower', '!=', '')
         ->where('borrower', '!=', '借りていない')
-        ->select('book_title', 'borrower')
+        ->select('id', 'book_title', 'borrower', 'updated_at')
         ->orderBy('book_title')
         ->get();
 
     return view('borrowing_records.index', ['books' => $books]);
 });
+
+// 返却処理
+Route::post('/books/{id}/return', function ($id) {
+    DB::table('books')
+        ->where('id', $id)
+        ->update(['borrower' => null]);
+    return redirect()->back();
+})->name('books.return');
