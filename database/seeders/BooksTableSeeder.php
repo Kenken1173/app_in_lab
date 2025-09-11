@@ -18,6 +18,22 @@ class BooksTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'book_title' => 'サンプル本2',
+                'author' => '著者B',
+                'published_date' => '2021-06-10',
+                'borrower'=> "東北太郎",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'book_title' => 'サンプル本3',
+                'author' => '著者C',
+                'published_date' => '2023-01-15',
+                'borrower'=> '山田太郎',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
