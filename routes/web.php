@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('home', compact('books'));
 });
 
+Route::get('test', function() {
+    return view('test');
+});
+
 Route::post('/borrow', [BookController::class, 'borrow']);
 Route::post('/return', [BookController::class, 'return']);
