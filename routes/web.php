@@ -3,6 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
+// テスト画面
+Route::get('/test', function () {
+    return view('test');
+});
+
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
 // ルートパスで borrowing_records.index を表示
 Route::get('/', function () {
     $books = DB::table('books')

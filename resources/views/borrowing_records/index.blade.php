@@ -69,6 +69,7 @@
   </style>
 </head>
 <body class="bg-[var(--color-background)] font-sans text-[var(--color-textmain)] min-h-screen">
+  @include('layouts.header')
   <div class="max-w-2xl mx-auto mt-12 bg-white rounded-xl shadow-lg p-8">
     <h1 class="text-center text-[var(--color-primary)] text-[var(--text-title)] font-bold mb-8 tracking-wide">貸出中の図書</h1>
 
@@ -110,7 +111,7 @@
     <div class="modal-content">
       <div class="modal-title">本当に返却しますか？</div>
       <div id="modal-bookinfo" style="color:#222; font-size:1rem; margin-bottom:1.5rem; line-height:1.7;">
-        <!-- 本の情報がここに入ります -->
+        <!-- 本の情報が入る場所 -->
       </div>
       <div class="modal-btns">
         <button id="modal-confirm" class="modal-btn confirm">OK</button>
