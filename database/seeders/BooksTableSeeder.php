@@ -16,7 +16,7 @@ class BooksTableSeeder extends Seeder
                 'published_date' => '2020-04-05',
                 'borrower' => '山田太郎',
                 'created_at' => now(),
-                'updated_at' => now(),
+                'updated_at' => '2025-07-30',
             ],
             [
                 'book_title' => 'サンプル本2',

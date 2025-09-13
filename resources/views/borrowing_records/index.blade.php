@@ -80,7 +80,7 @@
         <thead>
           <tr>
             <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">タイトル</th>
-            <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">借用者</th>
+            <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">利用者</th>
             <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">貸出日</th>
             <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-center text-[var(--text-heading)]">返却</th>
           </tr>
@@ -91,8 +91,24 @@
               <td class="px-6 py-4 text-[var(--text-body)]">{{ $b->book_title }}</td>
               <td class="px-6 py-4 text-[var(--text-body)]">{{ $b->borrower }}</td>
               <td class="px-6 py-4 text-[var(--text-body)]">
-                {{ $b->updated_at ? \Carbon\Carbon::parse($b->updated_at)->format('Y-m-d') : '-' }}
-              </td>
+                @if($b->updated_at)
+                  @php
+                    // 貸出日をCarbonオブジェクトに変換
+                    $borrowedDate = \Carbon\Carbon::parse($b->updated_at);
+                    $daysPassed = floor($borrowedDate->diffInHours(\Carbon\Carbon::now()) / 24);
+                  @endphp
+
+                  {{-- 貸出日 --}}
+                  {{ $borrowedDate->format('Y-m-d') }}
+                  
+                  {{-- 経過日数 --}}
+                  <span class="ml-2 text-xs text-gray-500">
+                    ({{ $daysPassed }}日経過)
+                  </span>
+                @else
+                  -
+                @endif
+              </td> 
               <td class="px-6 py-4 text-center">
                 <form method="POST" action="{{ route('books.return', ['id' => $b->id]) }}" class="inline return-form">
                   @csrf
@@ -111,7 +127,7 @@
     <div class="modal-content">
       <div class="modal-title">本当に返却しますか？</div>
       <div id="modal-bookinfo" style="color:#222; font-size:1rem; margin-bottom:1.5rem; line-height:1.7;">
-        <!-- 本の情報が入る場所 -->
+        <!-- 本の情報が入る -->
       </div>
       <div class="modal-btns">
         <button id="modal-confirm" class="modal-btn confirm">OK</button>
@@ -131,7 +147,7 @@
         const title = row.querySelector('td:nth-child(1)').textContent.trim();
         const borrower = row.querySelector('td:nth-child(2)').textContent.trim();
         document.getElementById('modal-bookinfo').innerHTML =
-          `<div><strong>タイトル：</strong>${title}</div><div><strong>借用者：</strong>${borrower}</div>`;
+          `<div><strong>タイトル：</strong>${title}</div><div><strong>利用者：</strong>${borrower}</div>`;
         document.getElementById('modal-bg').classList.add('active');
       });
     });

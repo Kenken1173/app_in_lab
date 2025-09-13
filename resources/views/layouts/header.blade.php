@@ -4,6 +4,7 @@
     <h1 class="text-title">研究室図書管理システム</h1>
     <nav class="ml-auto">
         <a href="/" class="mr-4">ホーム</a>
+        <a href="/record" class="mr-4">貸出中の図書</a>
         <a href="/about">このサイトについて</a>
     </nav>
     <!-- Tailwind を読み込む -->
