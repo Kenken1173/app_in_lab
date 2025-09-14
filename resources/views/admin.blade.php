@@ -53,8 +53,16 @@
                     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
                         <button type="button" class="close-modal absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
                         <h3 class="text-lg font-bold mb-4 text-red-500">書籍情報の削除</h3>
-                        <!-- ToDo ここにフォームを後で追加 -->
-                        <div class="text-gray-700">ここにフォームが入ります</div>
+                        <div class="text-gray-700">
+                            <ul>
+                                @foreach($books as $book)
+                                    <li>
+                                        {{ $book->book_title }}（{{ $book->author }} / {{ $book->published_date }}）
+                                        <!-- TODO 削除ボタンなどもここに設置可能 -->
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
