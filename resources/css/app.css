@@ -1,30 +1,26 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
-/* 共通デザイン（テーマ）の定義 */
-@theme {
-  /* フォント設定：本文は Noto Sans を優先 */
+/* カスタムプロパティ（テーマ）の定義 */
+:root {
   --font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif,
                'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-  /* カラーパレット */
-  --color-primary: #303F9F;     /* メインカラー（ボタン・リンク・強調に使用） */
-  --color-background: #F5F5F5; /* 背景色（全体のベース） */
-  --color-textmain: #444444;   /* 通常のテキストカラー */
-  --color-accent: #00BCD4;     /* アクセントカラー（補助ボタンやリンク） */
+  --color-primary: #303F9F;
+  --color-background: #F5F5F5;
+  --color-textmain: #444444;
+  --color-accent: #00BCD4;
 
-  /* フォントサイズの統一（階層を意識した設定） */
-  --text-title: 1.5rem;   /* 24px 見出しタイトル */
-  --text-heading: 1.25rem;/* 20px セクション見出し */
-  --text-body: 1rem;      /* 16px 本文（基本サイズ） */
-  --text-label: 0.875rem; /* 14px 補足やラベル */
-  
-  /* ボタンの共通デザイン */
-  --btn-padding-x: 1rem;   /* 左右の余白 */
-  --btn-padding-y: 0.5rem; /* 上下の余白 */
-  --btn-radius: 0.5rem;    /* 角丸（rounded-lg 相当） */
+  --text-title: 1.5rem;
+  --text-heading: 1.25rem;
+  --text-body: 1rem;
+  --text-label: 0.875rem;
+
+  --btn-padding-x: 1rem;
+  --btn-padding-y: 0.5rem;
+  --btn-radius: 0.5rem;
+}
+
+@layer utilities {
+  .bg-primary { background-color: var(--color-primary) !important; }
+  .text-title { font-size: var(--text-title) !important; line-height: 1.25 !important; }
 }
