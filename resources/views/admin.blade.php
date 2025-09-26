@@ -45,6 +45,7 @@
                                 <input type="date" name="published_date" id="published_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                             </div>
                             <div>
+                                 <!-- TODO 選択肢の中身をどの分野でカテゴライズするべきか相談 -->
                                 <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
                                 <div class="flex flex-col mt-1">
                                     <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
