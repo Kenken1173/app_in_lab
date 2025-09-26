@@ -121,7 +121,7 @@
               </td>
             @else
               <td class="px-6 py-4 text-center">
-                <form action="/return" method="POST" class="inline return-form">
+                <form action="{{ route('books.return', ['id' => $book->id]) }}" method="POST" class="inline return-form">
                   @csrf
                   <input type="hidden" name="id" value="{{ $book->id }}">
                   <button type="submit" class="bg-[var(--color-accent)] hover:bg-cyan-400 text-white font-semibold py-2 px-4 rounded transition">返却する</button>
