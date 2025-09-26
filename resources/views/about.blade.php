@@ -9,7 +9,6 @@
 	@include('layouts.header')
 	<div class="max-w-3xl mx-auto mt-20 bg-white rounded-2xl shadow-2xl p-14 border border-blue-100">
 		<h1 class="text-center text-[var(--color-primary)] text-2xl font-extrabold mb-8 tracking-wide flex items-center justify-center gap-2">
-			<svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-7 h-7 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2" /></svg>
 			このサイトに関して
 		</h1>
 		<p class="mb-8 text-[var(--text-body)] text-center text-lg leading-relaxed">
