@@ -98,6 +98,76 @@ class BooksTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        [
+            'book_title' => 'サンプル本2',
+            'author' => '著者B',
+            'published_date' => '2019-07-12',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本3',
+            'author' => '著者C',
+            'published_date' => '2018-01-23',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本4',
+            'author' => '著者D',
+            'published_date' => '2021-11-15',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本5',
+            'author' => '著者E',
+            'published_date' => '2022-03-30',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本6',
+            'author' => '著者F',
+            'published_date' => '2017-09-10',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本7',
+            'author' => '著者G',
+            'published_date' => '2020-12-01',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本8',
+            'author' => '著者H',
+            'published_date' => '2016-05-18',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本9',
+            'author' => '著者I',
+            'published_date' => '2015-08-22',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本10',
+            'author' => '著者J',
+            'published_date' => '2023-02-14',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'book_title' => 'サンプル本11',
+            'author' => '著者K',
+            'published_date' => '2021-06-09',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+    ]);
     }
 }

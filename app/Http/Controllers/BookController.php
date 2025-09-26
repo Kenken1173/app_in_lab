@@ -21,6 +21,8 @@ class BookController extends Controller
         return redirect()->back();
     }
 
+    
+
     public function admin_index()
     {
         $books = Book::all();
@@ -59,5 +61,16 @@ class BookController extends Controller
     {
         $books = Book::all(); // 全書籍データを取得
         return view('admin', compact('books'));
+    }
+
+    public function borrow(Request $request) {
+        $request->validate([
+            'id' => 'required|exists:books,id',
+            'borrower' => 'required|string|max:255',
+        ]);
+
+        Book::where('id', $request->id)
+            ->update(['borrower' => $request->borrower]);
+        return redirect()->back()->with('success', '本を借りました。');
     }
 }
