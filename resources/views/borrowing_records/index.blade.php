@@ -7,7 +7,7 @@
   <style>
     /* モーダルのスタイル */
     .modal-bg {
-      display: none;
+      display: none !important;
       position: fixed;
       z-index: 50;
       left: 0; top: 0; width: 100vw; height: 100vh;
@@ -16,7 +16,7 @@
       justify-content: center;
     }
     .modal-bg.active {
-      display: flex;
+      display: flex !important;
     }
     .modal-content {
       background: #fff;
