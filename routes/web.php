@@ -25,6 +25,9 @@ Route::get('/admin', [BookController::class, 'admin_index'])->name('admin.index'
 Route::post('/books', [BookController::class, 'store'])->name('books.store');
 Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
+Route::get('/about', function () {
+    return view('about');
+});
 Route::get('/welcome', function () {
     return view('welcome');
 });
