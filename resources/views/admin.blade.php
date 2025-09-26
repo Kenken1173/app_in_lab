@@ -28,9 +28,34 @@
                 <div id="bookModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
                     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
                         <button type="button" class="close-modal absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
-                        <h3 class="text-lg font-bold mb-4 text-[var(--color-primary)]">書籍情報の登録</h3>
-                        <!-- ToDo ここにフォームを後で追加 -->
-                        <div class="text-gray-700">ここにフォームが入ります</div>
+                        <h3 class="text-lg font-bold mb-4 text-[var(--color-primary)]">書籍情報を入力してください</h3>
+                        <!-- フォーム -->
+                        <form id="bookForm" action="{{ route('books.store') }}" method="POST" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label for="book_title" class="block text-sm font-medium text-gray-700">書籍タイトル</label>
+                                <input type="text" name="book_title" id="book_title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label for="author" class="block text-sm font-medium text-gray-700">著者</label>
+                                <input type="text" name="author" id="author" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label for="published_date" class="block text-sm font-medium text-gray-700">出版日</label>
+                                <input type="date" name="published_date" id="published_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
+                                <div class="flex flex-col mt-1">
+                                    <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
+                                    <label><input type="checkbox" name="categories[]" value="選択肢2"> 選択肢2</label>
+                                    <label><input type="checkbox" name="categories[]" value="選択肢3"> 選択肢3</label>
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">登録</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
