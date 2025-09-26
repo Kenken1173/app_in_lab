@@ -9,3 +9,4 @@ Route::get('/', function () {
 
 Route::get('/admin', [BookController::class, 'index'])->name('admin.index');
 Route::post('/books', [BookController::class, 'store'])->name('books.store');
+Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');

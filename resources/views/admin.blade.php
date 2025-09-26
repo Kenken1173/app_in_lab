@@ -28,7 +28,7 @@
                 <div id="bookModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
                     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
                         <button type="button" class="close-modal absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
-                        <h3 class="text-lg font-bold mb-4 text-[var(--color-primary)]">書籍情報を入力してください</h3>
+                        <h3 class="text-lg font-bold mb-4 text-[var(--color-primary)]">追加したい書籍の情報を入力してください</h3>
                         <!-- フォーム -->
                         <form id="bookForm" action="{{ route('books.store') }}" method="POST" class="space-y-4">
                             @csrf
@@ -78,13 +78,21 @@
                 <div id="deleteModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
                     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
                         <button type="button" class="close-modal absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
-                        <h3 class="text-lg font-bold mb-4 text-red-500">書籍情報の削除</h3>
+                        <h3 class="text-lg font-bold mb-4 text-red-500">登録した書籍情報を削除することができます</h3>
                         <div class="text-gray-700">
                             <ul>
                                 @foreach($books as $book)
-                                    <li>
-                                        {{ $book->book_title }}（{{ $book->author }} / {{ $book->published_date }}）
-                                        <!-- TODO 削除ボタンなどもここに設置可能 -->
+                                    <li class="flex justify-between items-center mb-2">
+                                        <span>
+                                            {{ $book->book_title }}（{{ $book->author }} / {{ $book->published_date }}）
+                                        </span>
+                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                                削除
+                                            </button>
+                                        </form>
                                     </li>
                                 @endforeach
                             </ul>
@@ -94,7 +102,8 @@
             </div>
         </div>
 
-        <div>
+        {{-- ユーザー管理は追加機能で実施した場合のみ実装することにした --}}
+        {{-- <div>
             <h2 class="text-xl font-bold text-textmain border-b-2 border-accent pb-2 mb-6 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -145,7 +154,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 <script>

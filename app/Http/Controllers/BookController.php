@@ -31,6 +31,14 @@ class BookController extends Controller
 
         return redirect()->back()->with('success', '書籍を追加しました');
     }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id); // 指定されたIDのBookを取得
+        $book->delete();               // 削除
+
+        return redirect()->back()->with('success', '書籍を削除しました');
+    }
     
     public function admin()
     {
