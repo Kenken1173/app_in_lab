@@ -27,7 +27,7 @@
       border-radius: 1rem;
       box-shadow: 0 8px 32px rgba(44,62,80,0.18);
       padding: 2.5rem 2rem 2rem 2rem;
-      max-width: 340px;
+      max-width: 480px;
       text-align: center;
       animation: fadeIn 0.2s;
     }
@@ -108,7 +108,7 @@
                 <!-- モーダル -->
                 <div id="modal-bg-{{ $book->id }}-borrow" class="modal-bg">
                   <div class="modal-content">
-                    <div class="modal-title">本を借りますか？</div>
+                    <div class="modal-title">あなたの名前を入力してください</div>
                     <div id="modal-bookinfo-{{ $book->id }}-borrow" style="color:#222; font-size:1rem; margin-bottom:1.5rem; line-height:1.7;">
                       <!-- 本の情報が入る -->
                     </div>
@@ -124,7 +124,7 @@
                 <form action="{{ route('books.return', ['id' => $book->id]) }}" method="POST" class="inline return-form">
                   @csrf
                   <input type="hidden" name="id" value="{{ $book->id }}">
-                  <button type="submit" class="bg-[var(--color-accent)] hover:bg-cyan-400 text-white font-semibold py-2 px-4 rounded transition">返却する</button>
+                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition">返却する</button>
                 </form>
 
                 <!-- モーダル -->
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const modalBg = document.getElementById(`modal-bg-${bookId}-borrow`);
       const modalBookInfo = document.getElementById(`modal-bookinfo-${bookId}-borrow`);
       modalBookInfo.innerHTML =
-        `<div><strong>タイトル：</strong>${bookTitle}</div><div><strong>著者：</strong>${bookAuthor}</div><input name="borrower" type="text" placeholder="名前" id="modal-borrower-input-${bookId}" style="margin-top:1rem; width:100%; padding:0.5rem; border:1px solid #ccc; border-radius:0.5rem;">`;
+        `<div><strong>タイトル：</strong>${bookTitle}</div><div><strong>著者：</strong>${bookAuthor}</div><input name="borrower" type="text" placeholder="貸出者の名前" id="modal-borrower-input-${bookId}" style="margin-top:1rem; width:100%; padding:0.5rem; border:1px solid #ccc; border-radius:0.5rem;">`;
       modalBg.classList.add('active');
 
       // OKボタン
