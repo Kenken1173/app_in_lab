@@ -3,4 +3,4 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 
-Route::get('/testapi', [TestController::class, 'index']);
+Route::get('/testapi/{name}', [TestController::class, 'search_book']);
