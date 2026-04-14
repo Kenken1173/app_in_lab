@@ -39,10 +39,13 @@ class BookController extends Controller
             'categories' => 'array', // チェックボックスのバリデーション（任意）
         ]);
 
+        $publishedYear = (int) $request->published_year;
+
         Book::create([
             'book_title' => $request->book_title,
             'author' => $request->author,
-            'published_year' => $request->published_year,
+            'published_year' => $publishedYear,
+            'published_date' => $publishedYear . '-01-01', // 出版年から出版日を生成
             'field'          => implode(',', $request->input('categories', [])),
         ]);
 

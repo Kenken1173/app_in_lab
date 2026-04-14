@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="shrink-0">
               <button
                 type="button"
-                class="add-book-from-result px-3 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 transition"
+                class="add-book-from-result px-3 py-2 rounded-md bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 transition cursor-pointer"
                 data-book='${buttonData}'
               >
                 この本を追加
@@ -509,30 +509,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
     }).join('');
-
-    document.querySelectorAll('.add-book-from-result').forEach(btn => {
-      btn.addEventListener('click', () => {
-        try {
-          const book = JSON.parse(btn.dataset.book);
-
-          if (selectedBookTitleEl) {
-            selectedBookTitleEl.value = book.title ?? '';
-          }
-          if (selectedAuthorEl) {
-            selectedAuthorEl.value = book.author ?? '';
-          }
-          if (selectedPublishedYearEl) {
-            selectedPublishedYearEl.value = book.published_year ?? '';
-          }
-          if (selectedIsbnEl) {
-            selectedIsbnEl.value = book.isbn ?? '';
-          }
-
-        } catch (e) {
-          console.error('failed to parse book data', e);
-        }
-      });
-    });  
   }
 
   async function fetchAndRender(page) {
@@ -648,6 +624,35 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
     updateSearchEnabled();
+  });
+
+  listEl?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.add-book-from-result');
+    if (!btn) return;
+
+    try {
+      const book = JSON.parse(btn.dataset.book);
+
+      if (selectedBookTitleEl) {
+        selectedBookTitleEl.value = book.title ?? '';
+      }
+      if (selectedAuthorEl) {
+        selectedAuthorEl.value = book.author ?? '';
+      }
+      if (selectedPublishedYearEl) {
+        selectedPublishedYearEl.value = book.published_year ?? '';
+      }
+      if (selectedIsbnEl) {
+        selectedIsbnEl.value = book.isbn ?? '';
+      }
+
+      document.getElementById('selected-book-form')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    } catch (err) {
+      console.error('failed to parse book data', err);
+    }
   });
 
 
