@@ -4,6 +4,7 @@ use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ApiController;
 
 // テスト画面
 Route::get('/', function () {
@@ -51,3 +52,7 @@ Route::get('/borrowing-records', [BookController::class, 'index'])->name('books.
 Route::post('/books/{id}/return', [BookController::class, 'return'])->name('books.return');
 Route::post('/borrow', [BookController::class, 'borrow']);
 Route::post('/return', [BookController::class, 'return']);
+
+// APIエンドポイント
+Route::get('/api/search_book', [ApiController::class, 'search_book'])
+    ->name('api.search_book');

@@ -41,8 +41,8 @@
                                 <input type="text" name="author" id="author" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                             </div>
                             <div>
-                                <label for="published_date" class="block text-sm font-medium text-gray-700">出版日</label>
-                                <input type="date" name="published_date" id="published_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                                <label for="published_year" class="block text-sm font-medium text-gray-700">出版年</label>
+                                <input type="number" name="published_year" id="published_year" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" min="0" max="{{ date('Y') }}" required>
                             </div>
                             <div>
                                  <!-- TODO 選択肢の中身をどの分野でカテゴライズするべきか相談 -->
@@ -84,7 +84,7 @@
                                 @foreach($books as $book)
                                     <li class="flex justify-between items-center mb-2">
                                         <span>
-                                            {{ $book->book_title }}（{{ $book->author }} / {{ $book->published_date }}）
+                                            {{ $book->book_title }}（{{ $book->author }} / {{ $book->published_year }}）
                                         </span>
                                         <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
                                             @csrf
