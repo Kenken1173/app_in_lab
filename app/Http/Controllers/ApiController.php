@@ -1,5 +1,6 @@
 <?php
-
+// TODO: 著者のみ検索をできるようにする、著者かつタイトルの検索結果を表示できるように(実行時間長めなのでタイムアウトしているかも？)
+// 読み込み長い時はローディング表示できたらいいな
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -77,44 +78,129 @@ class ApiController extends Controller
         }
 
         try {
-            $response = Http::timeout(10)
-                ->acceptJson()
-                ->get('https://openlibrary.org/search.json', $params);
+            $apiSource = 'openlibrary';
+            $requestParams = $params;
 
-            if (!$response->successful()) {
-                return response()->json([
-                    'message' => 'Open Library APIの取得に失敗しました',
-                    'status' => $response->status(),
-                    'body' => $response->body(),
-                ], 502, [], JSON_UNESCAPED_UNICODE);
+            if ($language === 'jpn') {
+                $apiSource = 'ndl';
+
+                $ndlParams = [
+                    'title' => $query,
+                    'cnt' => $limit,
+                    'idx' => (($page - 1) * $limit) + 1,
+                ];
+
+                if ($author != '') {
+                    $ndlParams['creator'] = $author;
+                }
+
+                if ($year != '') { 
+                    $ndlParams['from'] = $year;
+                }
+
+                logger()->debug('NDL URL', [
+                    'url' => 'https://ndlsearch.ndl.go.jp/api/opensearch?' . http_build_query($ndlParams),
+                    'params' => $ndlParams,
+                ]);
+                $response = Http::timeout(10)
+                    ->get('https://ndlsearch.ndl.go.jp/api/opensearch', $ndlParams);
+                $requestParams = $ndlParams;
+
+                if (!$response->successful()) {
+                    return response()->json([
+                        'message' => '国立図書館APIの取得に失敗しました',
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ], 502, [], JSON_UNESCAPED_UNICODE);
+                }
+
+                $xml = simplexml_load_string($response->body());
+                if ($xml === false) {
+                    return response()->json([
+                        'message' => '国立図書館APIのレスポンス解析に失敗しました',
+                    ], 502, [], JSON_UNESCAPED_UNICODE);
+                }
+
+                $ns = $xml->getNamespaces(true);
+                $opensearchNs = $ns['opensearch'] ?? null;
+                $dcNs = $ns['dc'] ?? null;
+
+                $channel = $xml->channel ?? null;
+                $itemsNode = $channel?->item ?? [];
+
+                $total = 0;
+                if ($channel && $opensearchNs) {
+                    $channelOpenSearch = $channel->children($opensearchNs);
+                    $total = (int) ($channelOpenSearch->totalResults ?? 0);
+                }
+
+                $items = collect();
+                foreach ($itemsNode as $itemNode) {
+                    $dc = $dcNs ? $itemNode->children($dcNs) : null;
+
+                    $creator = isset($dc->creator) ? trim((string) $dc->creator) : '';
+                    $dateRaw = isset($dc->date) ? trim((string) $dc->date) : '';
+                    preg_match('/\d{4}/', $dateRaw, $yearMatch);
+                    $publishYear = isset($yearMatch[0]) ? (int) $yearMatch[0] : null;
+
+                    $identifier = isset($dc->identifier) ? trim((string) $dc->identifier) : '';
+                    preg_match_all('/97[89]\d{10}|\d{9}[\dXx]/', preg_replace('/[^0-9Xx]/', '', $identifier), $isbnMatches);
+                    $isbns = array_values(array_unique($isbnMatches[0] ?? []));
+
+                    $lang = isset($dc->language) ? trim((string) $dc->language) : 'jpn';
+
+                    $items->push([
+                        'title' => trim((string) ($itemNode->title ?? '')),
+                        'author_name' => $creator !== '' ? [$creator] : [],
+                        'first_publish_year' => $publishYear,
+                        'isbn' => $isbns,
+                        'language' => $lang !== '' ? [$lang] : ['jpn'],
+                    ]);
+                }
+                $items = $items->values();
+                if ($total <= 0) {
+                    $total = $items->count();
+                }
+            } else {
+                $response = Http::timeout(10)
+                    ->acceptJson()
+                    ->get('https://openlibrary.org/search.json', $params);
+
+                if (!$response->successful()) {
+                    return response()->json([
+                        'message' => 'Open Library APIの取得に失敗しました',
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ], 502, [], JSON_UNESCAPED_UNICODE);
+                }
+
+                $data = $response->json();
+
+                $docs = $data['docs'] ?? [];
+                $total = (int) ($data['numFound'] ?? count($docs));
+
+                // フロント側が扱いやすい形に整形
+                $items = collect($docs)->map(function ($book) {
+                    return [
+                        'title' => $book['title'] ?? '',
+                        'author_name' => $book['author_name'] ?? [],
+                        'first_publish_year' => $book['first_publish_year'] ?? null,
+                        'isbn' => $book['isbn'] ?? [],
+                        'language' => $book['language'] ?? [],
+                    ];
+                })->values();
             }
 
-            $data = $response->json();
+            $hasMore = ($page * $limit) < $total;
 
-            $docs = $data['docs'] ?? [];
-            $total = (int) ($data['numFound'] ?? count($docs));
+            return response()->json([
+                'items' => $items,
+                'total' => $total,
+                'page' => $page,
+                'limit' => $limit,
+                'has_more' => $hasMore,
 
-            // フロント側が扱いやすい形に整形
-            $items = collect($docs)->map(function ($book) {
-                return [
-                    'title' => $book['title'] ?? '',
-                    'author_name' => $book['author_name'] ?? [],
-                    'first_publish_year' => $book['first_publish_year'] ?? null,
-                    'isbn' => $book['isbn'] ?? [],
-                    'language' => $book['language'] ?? [],
-                ];
-            })->values();
-        
-        $hasMore = ($page * $limit) < $total;
-
-        return response()->json([
-            'items' => $items,
-            'total' => $total,
-            'page' => $page,
-            'limit' => $limit,
-            'has_more' => $hasMore,
-
-            // デバッグ用（不要なら消してOK）
+                // デバッグ用（不要なら消してOK）
                 'echo' => [
                     'query' => $query,
                     'author' => $author,

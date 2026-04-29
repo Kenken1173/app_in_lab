@@ -283,18 +283,17 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div class="sm:col-span-2">
-          <label for="ol_keyword" class="block text-sm font-medium text-gray-700">キーワード</label>
-          <input id="ol_keyword" type="text"
-                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                 placeholder="例：量子情報 / Quantum information" />
           <div>
             <label for="ol_language" class="block text-sm font-medium text-gray-700">言語</label>
             <select id="ol_language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-              <option value="">指定しない</option>
               <option value="jpn">日本語</option>
               <option value="en">English</option>
             </select>
           </div>
+          <label for="ol_keyword" class="block text-sm font-medium text-gray-700">キーワード</label>
+          <input id="ol_keyword" type="text"
+                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                 placeholder="例：量子情報 / Quantum information" />
         </div>
 
         <div>
