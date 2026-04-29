@@ -15,11 +15,12 @@
                 書籍管理
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button class="open-modal flex flex-col items-center justify-center p-8 
-                                  bg-transparent border-2 border-primary text-primary rounded-[var(--btn-radius)] 
-                                  transition duration-200 hover:bg-primary hover:text-white hover:scale-105
-                                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
-                        data-modal-target="#bookModal">
+                <button id="open-add-book"
+                  class="w-full flex flex-col items-center justify-center p-5
+                         bg-transparent border-2 border-[var(--color-primary)] text-[var(--color-primary)]
+                         rounded-[var(--btn-radius)]
+                         transition duration-200 hover:bg-[var(--color-primary)] hover:text-white hover:scale-[1.02]
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
                     <span class="text-heading font-bold mb-2">書籍を新しく追加</span>
                     <span class="text-label opacity-80">新しい書籍情報を登録します</span>
                 </button>
@@ -45,12 +46,10 @@
                                 <input type="number" name="published_year" id="published_year" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" min="0" max="{{ date('Y') }}" required>
                             </div>
                             <div>
-                                 <!-- TODO 選択肢の中身をどの分野でカテゴライズするべきか相談 -->
-                                <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
+                                <label class="block text-sm font-medium text-gray-700">所在</label>
                                 <div class="flex flex-col mt-1">
-                                    <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
-                                    <label><input type="checkbox" name="categories[]" value="選択肢2"> 選択肢2</label>
-                                    <label><input type="checkbox" name="categories[]" value="選択肢3"> 選択肢3</label>
+                                    <label><input type="radio" name="location" value="206" required> 206</label>
+                                    <label><input type="radio" name="location" value="300"> 300</label>
                                 </div>
                             </div>
                             <div class="flex justify-end">

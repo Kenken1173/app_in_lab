@@ -33,15 +33,15 @@ class BookController extends Controller
         return view('admin', compact('books'));
     }
 
-// 新規書籍登録
-public function store(Request $request)
-{
-    $request->validate([
-        'book_title' => 'required|string|max:255',
-        'author' => 'required|string|max:255',
-        'published_year' => 'required|integer|min:0|max:' . date('Y'),
-        'categories' => 'array',
-    ]);
+    // 新規書籍登録
+    public function store(Request $request)
+    {
+        $request->validate([
+            'book_title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'published_year' => 'required|integer|min:0|max:' . date('Y'),
+            'location' => 'required|string|in:206,300',
+        ]);
 
     $publishedYear = (int) $request->published_year;
 

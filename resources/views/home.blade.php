@@ -174,6 +174,7 @@
               <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">タイトル</th>
               <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">著者</th>
               <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">出版年</th>
+              <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-left text-[var(--text-heading)]">所在</th>
               <th class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 text-center text-[var(--text-heading)]">借りる・返却</th>
             </tr>
           </thead>
@@ -183,6 +184,7 @@
                 <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->book_title }}</td>
                 <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->author }}</td>
                 <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->published_year }}</td>
+                <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->location }}</td>
 
                 @if (is_null($book->borrower))
                   <td class="px-6 py-4 text-center">
@@ -390,11 +392,10 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
+          <label class="block text-sm font-medium text-gray-700">所在</label>
           <div class="flex flex-col mt-1">
-            <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
-            <label><input type="checkbox" name="categories[]" value="選択肢2"> 選択肢2</label>
-            <label><input type="checkbox" name="categories[]" value="選択肢3"> 選択肢3</label>
+            <label><input type="radio" name="location" value="206" required> 206</label>
+            <label><input type="radio" name="location" value="300"> 300</label>
           </div>
         </div>
 
