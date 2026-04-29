@@ -50,7 +50,7 @@ class BookController extends Controller
         'author' => $request->author,
         'published_year' => $publishedYear,
         'published_date' => $publishedYear . '-01-01',
-        'field' => implode(',', $request->input('categories', [])),
+        'location' => $request->input('location'),
     ]);
 
     return redirect()
