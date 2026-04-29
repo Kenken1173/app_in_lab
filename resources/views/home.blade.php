@@ -73,11 +73,93 @@
   </style>
 </head>
 <body>
-  @if (session('success'))
-    <div style="color: green; margin-bottom: 10px;">
-      {{ session('success') }}
+@php
+  $flash = null;
+
+  if (session('book_added')) {
+      $flash = [
+          'type' => 'success',
+          'title' => '書籍を追加しました',
+          'message' => session('book_added'),
+          'color' => 'emerald',
+          'icon' => '✓',
+      ];
+  } elseif (session('book_deleted')) {
+      $flash = [
+          'type' => 'danger',
+          'title' => '書籍を削除しました',
+          'message' => session('book_deleted'),
+          'color' => 'red',
+          'icon' => '×',
+      ];
+  } elseif (session('book_borrowed')) {
+      $flash = [
+          'type' => 'info',
+          'title' => '貸出処理が完了しました',
+          'message' => session('book_borrowed'),
+          'color' => 'sky',
+          'icon' => '✓',
+      ];
+  } elseif (session('book_returned')) {
+      $flash = [
+          'type' => 'success',
+          'title' => '返却処理が完了しました',
+          'message' => session('book_returned'),
+          'color' => 'emerald',
+          'icon' => '✓',
+      ];
+  }
+@endphp
+
+@if ($flash)
+  <div class="max-w-6xl mx-auto mt-6 px-4">
+    <div
+      id="flash-message"
+      class="
+        flex items-start gap-3 rounded-xl px-5 py-4 shadow-sm border
+        @if ($flash['color'] === 'emerald')
+          border-emerald-200 bg-emerald-50 text-emerald-800
+        @elseif ($flash['color'] === 'red')
+          border-red-200 bg-red-50 text-red-800
+        @elseif ($flash['color'] === 'sky')
+          border-sky-200 bg-sky-50 text-sky-800
+        @endif
+      "
+      role="alert"
+    >
+      <div
+        class="
+          flex h-8 w-8 shrink-0 items-center justify-center rounded-full
+          @if ($flash['color'] === 'emerald')
+            bg-emerald-100 text-emerald-700
+          @elseif ($flash['color'] === 'red')
+            bg-red-100 text-red-700
+          @elseif ($flash['color'] === 'sky')
+            bg-sky-100 text-sky-700
+          @endif
+        "
+      >
+        {{ $flash['icon'] }}
+      </div>
+
+      <div class="flex-1">
+        <div class="font-bold">{{ $flash['title'] }}</div>
+        <div class="mt-1 text-sm">
+          {{ $flash['message'] }}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="close-flash"
+        class="ml-4 opacity-70 hover:opacity-100"
+        aria-label="閉じる"
+      >
+        ×
+      </button>
     </div>
-  @endif
+  </div>
+@endif
   <div class="max-w-6xl mx-auto mt-12 bg-white rounded-xl shadow-lg p-8">
     <h1 class="text-center text-[var(--color-primary)] text-[var(--text-title)] font-bold mb-8 tracking-wide">
       すべての図書
@@ -369,6 +451,26 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   let targetForm = null;
+
+  //自動で閉じる
+  const flashMessage = document.getElementById('flash-message');
+  const closeFlash = document.getElementById('close-flash');
+
+  closeFlash?.addEventListener('click', () => {
+    flashMessage?.remove();
+  });
+
+  if (flashMessage) {
+    setTimeout(() => {
+      flashMessage.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      flashMessage.style.opacity = '0';
+      flashMessage.style.transform = 'translateY(-8px)';
+
+      setTimeout(() => {
+        flashMessage.remove();
+      }, 400);
+    }, 4000);
+  }
 
   // 追加・削除モーダルの処理
   const addBg = document.getElementById('modal-bg-add-book');
