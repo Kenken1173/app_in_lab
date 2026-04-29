@@ -51,7 +51,6 @@ Route::get('/borrowing-records', [BookController::class, 'index'])->name('books.
 // 返却処理
 Route::post('/books/{id}/return', [BookController::class, 'return'])->name('books.return');
 Route::post('/borrow', [BookController::class, 'borrow']);
-Route::post('/return', [BookController::class, 'return']);
 
 // APIエンドポイント
 Route::get('/api/search_book', [ApiController::class, 'search_book'])

@@ -16,12 +16,16 @@ class BookController extends Controller
     public function return($id)
     {
         $book = Book::findOrFail($id);
+
+        $title = $book->book_title;
+
         $book->borrower = null;
         $book->save();
-        return redirect()->back();
-    }
 
-    
+        return redirect()
+            ->back()
+            ->with('book_returned', '「' . $title . '」を返却しました。');
+    }
 
     public function admin_index()
     {
@@ -39,26 +43,33 @@ class BookController extends Controller
             'location' => 'required|string|in:206,300',
         ]);
 
-        $publishedYear = (int) $request->published_year;
+    $publishedYear = (int) $request->published_year;
 
-        Book::create([
-            'book_title' => $request->book_title,
-            'author' => $request->author,
-            'published_year' => $publishedYear,
-            'published_date' => $publishedYear . '-01-01', // 出版年から出版日を生成
-            'location' => $request->input('location'),
-        ]);
+    $book = Book::create([
+        'book_title' => $request->book_title,
+        'author' => $request->author,
+        'published_year' => $publishedYear,
+        'published_date' => $publishedYear . '-01-01',
+        'location' => $request->input('location'),
+    ]);
 
-        return redirect()->back()->with('success', '書籍を追加しました');
-    }
+    return redirect()
+        ->back()
+        ->with('book_added', '「' . $book->book_title . '」を登録しました。');
+}
 
-    public function destroy($id)
-    {
-        $book = Book::findOrFail($id); // 指定されたIDのBookを取得
-        $book->delete();               // 削除
+public function destroy($id)
+{
+    $book = Book::findOrFail($id);
 
-        return redirect()->back()->with('success', '書籍を削除しました');
-    }
+    $title = $book->book_title;
+
+    $book->delete();
+
+    return redirect()
+        ->back()
+        ->with('book_deleted', '「' . $title . '」を削除しました。');
+}
     
     public function admin()
     {
@@ -66,14 +77,19 @@ class BookController extends Controller
         return view('admin', compact('books'));
     }
 
-    public function borrow(Request $request) {
+    public function borrow(Request $request)
+    {
         $request->validate([
             'id' => 'required|exists:books,id',
             'borrower' => 'required|string|max:255',
         ]);
 
-        Book::where('id', $request->id)
-            ->update(['borrower' => $request->borrower]);
-        return redirect()->back()->with('success', '本を借りました。');
+        $book = Book::findOrFail($request->id);
+        $book->borrower = $request->borrower;
+        $book->save();
+
+        return redirect()
+            ->back()
+            ->with('book_borrowed', '「' . $book->book_title . '」を貸出中にしました。');
     }
 }
