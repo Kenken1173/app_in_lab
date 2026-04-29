@@ -165,6 +165,122 @@
       すべての図書
     </h1>
 
+    @if ($errors->any())
+      <div class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+        <div class="font-semibold">入力内容を確認してください。</div>
+        <ul class="mt-2 list-disc pl-5">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
+
+    <form method="GET" action="{{ url('/') }}" class="mb-4 rounded-lg border border-gray-200 bg-[var(--color-background)] p-4 shadow-sm">
+      <input type="hidden" name="sort" value="{{ $sort ?? 'title_asc' }}">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_180px_180px_auto] gap-3 items-end">
+        <div>
+          <label for="book-keyword" class="block text-sm font-semibold text-gray-700 mb-1">キーワード検索</label>
+          <input
+            id="book-keyword"
+            name="keyword"
+            type="search"
+            value="{{ $keyword ?? '' }}"
+            placeholder="タイトル・著者・出版年など"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+          >
+        </div>
+
+        <div>
+          <label for="book-location" class="block text-sm font-semibold text-gray-700 mb-1">所在</label>
+          <select
+            id="book-location"
+            name="location"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+          >
+            <option value="" @selected(($location ?? '') === '')>すべて</option>
+            <option value="206" @selected(($location ?? '') === '206')>206</option>
+            <option value="300" @selected(($location ?? '') === '300')>300</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="book-availability" class="block text-sm font-semibold text-gray-700 mb-1">貸出状況</label>
+          <select
+            id="book-availability"
+            name="availability"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+          >
+            <option value="" @selected(($availability ?? '') === '')>すべて</option>
+            <option value="available" @selected(($availability ?? '') === 'available')>在庫あり</option>
+            <option value="borrowed" @selected(($availability ?? '') === 'borrowed')>貸出中</option>
+          </select>
+        </div>
+
+        <div class="flex gap-2">
+          <button type="submit" class="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">
+            検索
+          </button>
+          <a href="{{ url('/') }}" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-white">
+            クリア
+          </a>
+        </div>
+      </div>
+    </form>
+
+    @php
+      $activeSort = $sort ?? 'title_asc';
+      $availabilityLabels = [
+          '' => 'すべて',
+          'available' => '在庫あり',
+          'borrowed' => '貸出中',
+      ];
+      $sortTabs = [
+          'title_asc' => 'タイトル 昇順',
+          'title_desc' => 'タイトル 降順',
+          'author_asc' => '著者 昇順',
+          'author_desc' => '著者 降順',
+          'year_asc' => '出版年 古い順',
+          'year_desc' => '出版年 新しい順',
+          'created_desc' => '登録日 新しい順',
+          'created_asc' => '登録日 古い順',
+      ];
+    @endphp
+
+    <div class="mb-6 flex flex-wrap gap-2 border-b border-gray-200 pb-3">
+      @foreach ($sortTabs as $sortValue => $sortLabel)
+        @php
+          $sortUrl = url('/') . '?' . http_build_query(array_filter([
+              'keyword' => $keyword ?? '',
+              'location' => $location ?? '',
+              'availability' => $availability ?? '',
+              'sort' => $sortValue,
+          ], fn ($value) => $value !== '' && $value !== null));
+        @endphp
+        <a
+          href="{{ $sortUrl }}"
+          class="rounded-md border px-3 py-2 text-sm font-semibold transition
+            @if ($activeSort === $sortValue)
+              border-[var(--color-primary)] bg-[var(--color-primary)] text-white
+            @else
+              border-gray-300 bg-white text-gray-700 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]
+            @endif"
+        >
+          {{ $sortLabel }}
+        </a>
+      @endforeach
+    </div>
+
+    <div class="mb-4 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700">
+      <div class="font-semibold">表示件数: {{ $books->total() }}件</div>
+      <div class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-gray-600">
+        <span>キーワード: {{ ($keyword ?? '') !== '' ? $keyword : '指定なし' }}</span>
+        <span>所在: {{ ($location ?? '') !== '' ? $location : 'すべて' }}</span>
+        <span>貸出状況: {{ $availabilityLabels[$availability ?? ''] ?? 'すべて' }}</span>
+        <span>並び替え: {{ $sortTabs[$activeSort] ?? $sortTabs['title_asc'] }}</span>
+      </div>
+    </div>
+
     <div class="flex flex-col lg:flex-row gap-6 items-start">
       {{-- 左：本一覧 --}}
       <div class="flex-1 min-w-0">
@@ -179,7 +295,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($books as $book)
+            @forelse($books as $book)
               <tr class="even:bg-gray-100 hover:bg-[var(--color-accent)]/10 transition">
                 <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->book_title }}</td>
                 <td class="px-6 py-4 text-[var(--text-body)]">{{ $book->author }}</td>
@@ -233,9 +349,24 @@
                   <td class="hidden">{{ $book->borrower }}</td>
                 @endif
               </tr>
-            @endforeach
+            @empty
+              <tr>
+                <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-600">
+                  条件に一致する図書はありません。
+                </td>
+              </tr>
+            @endforelse
           </tbody>
       </table>
+
+      <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div class="text-sm font-semibold text-gray-600">
+          {{ $books->currentPage() }} / {{ $books->lastPage() }}
+        </div>
+        <div>
+          {{ $books->links() }}
+        </div>
+      </div>
     </div>
 
        {{-- 右：追加/削除ボタン--}}
@@ -419,7 +550,7 @@
 
     <div class="text-sm text-gray-700 max-h-[60vh] overflow-auto">
       <ul class="space-y-2">
-        @foreach($books as $book)
+        @foreach($allBooksForManagement ?? $books as $book)
           <li class="flex items-center justify-between gap-3 border rounded-lg p-3 bg-white">
             <div class="min-w-0">
               <div class="font-semibold truncate">{{ $book->book_title }}</div>
@@ -815,7 +946,7 @@ document.addEventListener('DOMContentLoaded', function() {
       targetForm = form;
       const bookId = form.querySelector('input[name="id"]').value;
       const bookTitle = form.closest('tr').querySelector('td:nth-child(1)').textContent;
-      const borrower = form.closest('tr').querySelector('td:nth-child(5)')?.textContent || '';
+      const borrower = form.closest('tr').querySelector('td:nth-child(6)')?.textContent || '';
       const modalBg = document.getElementById(`modal-bg-${bookId}-return`);
       const modalBookInfo = document.getElementById(`modal-bookinfo-${bookId}-return`);
       if (modalBookInfo) {

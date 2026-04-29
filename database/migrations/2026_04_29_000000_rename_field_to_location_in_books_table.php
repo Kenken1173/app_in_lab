@@ -1,4 +1,3 @@
-<!-- DBの列名変更をするmigrationファイル -->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
