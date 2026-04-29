@@ -516,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function buildParams(page) {
     return {
       query: norm(keywordEl?.value),
-      auther: norm(authorEl?.value),   // ← 要件どおり "auther" で送る
+      author: norm(authorEl?.value),
       year: norm(yearEl?.value),
       isbn: norm(isbnEl?.value),
       language: norm(langEl?.value) || null, // ""ならnull扱い
@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function anyFilled(p) {
-    return !!(p.query || p.auther || p.year || p.isbn);
+    return !!(p.query || p.author || p.year || p.isbn);
   }
 
   function toQueryString(params) {
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     listEl.innerHTML = items.map((it, idx) => {
       const rawTitle  = it.title ?? it.book_title ?? it.name ?? '';
-      const rawAuthor = it.author ?? it.auther ?? it.author_name?.[0] ?? '';
+      const rawAuthor = it.author ?? it.author ?? it.author_name?.[0] ?? '';
       const rawYear   = it.year ?? it.first_publish_year ?? '';
       const rawIsbn   = Array.isArray(it.isbn) ? (it.isbn[0] ?? '') : (it.isbn ?? '');
 

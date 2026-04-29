@@ -9,9 +9,9 @@ class ApiController extends Controller
 {
     public function search_book(Request $request)
     {
-        // --- 入力を取得（auther/author 両対応にしておく） ---
+        // --- 入力を取得 ---
         $query  = trim((string)$request->query('query', ''));
-        $auther = trim((string)$request->query('auther', $request->query('author', '')));
+        $author = trim((string)$request->query('author', ''));
         $year   = trim((string)$request->query('year', ''));
         $isbnRaw = trim((string)$request->query('isbn', ''));
         $isbn = $isbnRaw !== '' ? preg_replace('/[^0-9Xx]/', '', $isbnRaw) : '';
@@ -37,7 +37,7 @@ class ApiController extends Controller
         $limit = min(50, max(1, $limit)); // 暴走防止（仮）
 
         // 何も入力されていない場合は検索しない
-        if($query == '' && $auther == '' && $year == '' && $isbn == '') {
+        if($query == '' && $author == '' && $year == '' && $isbn == '') {
             return response()->json([
                 'items' => [],
                 'total' => 0,
@@ -63,8 +63,8 @@ class ApiController extends Controller
                 $params['q'] = $query;
             }
 
-            if ($auther !== '') {
-                $params['author'] = $auther;
+            if ($author !== '') {
+                $params['author'] = $author;
             }
 
             if ($year !== '') {
@@ -117,7 +117,7 @@ class ApiController extends Controller
             // デバッグ用（不要なら消してOK）
                 'echo' => [
                     'query' => $query,
-                    'auther' => $auther,
+                    'author' => $author,
                     'year' => $year,
                     'isbn' => $isbn,
                     'language' => $language,
