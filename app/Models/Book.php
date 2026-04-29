@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 
 class Book extends Model
 {
-    protected $fillable = ['book_title', 'author', 'published_year', 'published_date', 'borrower', 'image_path', 'field', 'created_at', 'updated_at'];
+    protected $fillable = ['book_title', 'author', 'published_year', 'published_date', 'borrower', 'image_path', 'location', 'created_at', 'updated_at'];
     
     protected $casts = [
         'updated_at' => 'datetime',

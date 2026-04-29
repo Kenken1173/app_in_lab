@@ -46,7 +46,7 @@ class BookController extends Controller
             'author' => $request->author,
             'published_year' => $publishedYear,
             'published_date' => $publishedYear . '-01-01', // 出版年から出版日を生成
-            'field'          => implode(',', $request->input('categories', [])),
+            'location'       => implode(',', $request->input('categories', [])),
         ]);
 
         return redirect()->back()->with('success', '書籍を追加しました');
