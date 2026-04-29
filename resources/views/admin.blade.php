@@ -45,12 +45,10 @@
                                 <input type="number" name="published_year" id="published_year" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" min="0" max="{{ date('Y') }}" required>
                             </div>
                             <div>
-                                 <!-- TODO 選択肢の中身をどの分野でカテゴライズするべきか相談 -->
-                                <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
+                                <label class="block text-sm font-medium text-gray-700">所在</label>
                                 <div class="flex flex-col mt-1">
-                                    <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
-                                    <label><input type="checkbox" name="categories[]" value="選択肢2"> 選択肢2</label>
-                                    <label><input type="checkbox" name="categories[]" value="選択肢3"> 選択肢3</label>
+                                    <label><input type="checkbox" name="categories[]" value="206"> 206</label>
+                                    <label><input type="checkbox" name="categories[]" value="300"> 300</label>
                                 </div>
                             </div>
                             <div class="flex justify-end">

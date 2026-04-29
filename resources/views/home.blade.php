@@ -310,9 +310,8 @@
         <div>
           <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
           <div class="flex flex-col mt-1">
-            <label><input type="checkbox" name="categories[]" value="選択肢1"> 選択肢1</label>
-            <label><input type="checkbox" name="categories[]" value="選択肢2"> 選択肢2</label>
-            <label><input type="checkbox" name="categories[]" value="選択肢3"> 選択肢3</label>
+            <label><input type="checkbox" name="categories[]" value="206"> 206</label>
+            <label><input type="checkbox" name="categories[]" value="300"> 300</label>
           </div>
         </div>
 
