@@ -47,8 +47,8 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">所在</label>
                                 <div class="flex flex-col mt-1">
-                                    <label><input type="checkbox" name="categories[]" value="206"> 206</label>
-                                    <label><input type="checkbox" name="categories[]" value="300"> 300</label>
+                                    <label><input type="radio" name="location" value="206" required> 206</label>
+                                    <label><input type="radio" name="location" value="300"> 300</label>
                                 </div>
                             </div>
                             <div class="flex justify-end">

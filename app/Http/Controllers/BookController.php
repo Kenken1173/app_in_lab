@@ -36,7 +36,7 @@ class BookController extends Controller
             'book_title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'published_year' => 'required|integer|min:0|max:' . date('Y'),
-            'categories' => 'array', // チェックボックスのバリデーション（任意）
+            'location' => 'required|string|in:206,300',
         ]);
 
         $publishedYear = (int) $request->published_year;
@@ -46,7 +46,7 @@ class BookController extends Controller
             'author' => $request->author,
             'published_year' => $publishedYear,
             'published_date' => $publishedYear . '-01-01', // 出版年から出版日を生成
-            'location'       => implode(',', $request->input('categories', [])),
+            'location' => $request->input('location'),
         ]);
 
         return redirect()->back()->with('success', '書籍を追加しました');
