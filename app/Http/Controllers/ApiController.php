@@ -88,7 +88,7 @@ class SubApiController extends Controller
                     $books[] = [
                         'book_title' => $book['title'] ?? null,
                         'author' => $book['author_name'] ?? null,
-                        'field' => $book['subject'] ?? [],
+                        'location' => $book['subject'] ?? [],
                         'published_year' => $book['first_publish_year'] ?? [],
                     ];
                 }
@@ -130,7 +130,7 @@ class SubApiController extends Controller
                     $books[] = [
                         'book_title' => $book['title'] ?? null,
                         'author' => $book['author_name'] ?? null,
-                        'field' => $book['subject'] ?? [],
+                        'location' => $book['subject'] ?? [],
                         'published_year' => $book['first_publish_year'] ?? [],
                     ];
                 }
