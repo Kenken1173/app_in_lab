@@ -15,11 +15,12 @@
                 書籍管理
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button class="open-modal flex flex-col items-center justify-center p-8 
-                                  bg-transparent border-2 border-primary text-primary rounded-[var(--btn-radius)] 
-                                  transition duration-200 hover:bg-primary hover:text-white hover:scale-105
-                                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]"
-                        data-modal-target="#bookModal">
+                <button id="open-add-book"
+                  class="w-full flex flex-col items-center justify-center p-5
+                         bg-transparent border-2 border-[var(--color-primary)] text-[var(--color-primary)]
+                         rounded-[var(--btn-radius)]
+                         transition duration-200 hover:bg-[var(--color-primary)] hover:text-white hover:scale-[1.02]
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)]">
                     <span class="text-heading font-bold mb-2">書籍を新しく追加</span>
                     <span class="text-label opacity-80">新しい書籍情報を登録します</span>
                 </button>
