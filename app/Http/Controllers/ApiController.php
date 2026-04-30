@@ -1,6 +1,4 @@
 <?php
-// TODO: 著者のみ検索をできるようにする、著者かつタイトルの検索結果を表示できるように(実行時間長めなのでタイムアウトしているかも？)
-// 読み込み長い時はローディング表示できたらいいな
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -85,10 +83,13 @@ class ApiController extends Controller
                 $apiSource = 'ndl';
 
                 $ndlParams = [
-                    'title' => $query,
                     'cnt' => $limit,
                     'idx' => (($page - 1) * $limit) + 1,
                 ];
+
+                if ($query !== '') {
+                    $ndlParams['title'] = $query;
+                }
 
                 if ($author != '') {
                     $ndlParams['creator'] = $author;
