@@ -85,6 +85,8 @@ class ApiController extends Controller
                 $ndlParams = [
                     'cnt' => $limit,
                     'idx' => (($page - 1) * $limit) + 1,
+                    // 記事・デジタル資料などを除き、図書のみに絞る
+                    'mediatype' => 'books',
                 ];
 
                 if ($query !== '') {
@@ -122,9 +124,17 @@ class ApiController extends Controller
                     ], 502, [], JSON_UNESCAPED_UNICODE);
                 }
 
+                // NDLのレスポンスは接頭辞が openSearch（大文字S）なので、大文字小文字を無視して探す
                 $ns = $xml->getNamespaces(true);
-                $opensearchNs = $ns['opensearch'] ?? null;
-                $dcNs = $ns['dc'] ?? null;
+                $opensearchNs = null;
+                $dcNs = null;
+                foreach ($ns as $prefix => $uri) {
+                    if (strcasecmp($prefix, 'opensearch') === 0) {
+                        $opensearchNs = $uri;
+                    } elseif (strcasecmp($prefix, 'dc') === 0) {
+                        $dcNs = $uri;
+                    }
+                }
 
                 $channel = $xml->channel ?? null;
                 $itemsNode = $channel?->item ?? [];
