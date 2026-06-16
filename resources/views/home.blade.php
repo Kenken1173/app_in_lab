@@ -406,7 +406,7 @@
     <!-- 検索セクション -->
     <section class="mb-4 p-4 rounded-xl border bg-[var(--color-background)]">
       <div class="mb-3">
-        <h4 class="font-semibold text-gray-800">Open Libraryで検索</h4>
+        <h4 id="ol_search_source_title" class="font-semibold text-gray-800">国立国会図書館サーチで検索</h4>
         <p class="text-xs text-gray-500 mt-1">
           キーワード / 著者 / 発行年 / ISBN のいずれかを入力すると検索できます
         </p>
@@ -414,18 +414,17 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div class="sm:col-span-2">
-          <label for="ol_keyword" class="block text-sm font-medium text-gray-700">キーワード</label>
-          <input id="ol_keyword" type="text"
-                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                 placeholder="例：量子情報 / Quantum information" />
           <div>
             <label for="ol_language" class="block text-sm font-medium text-gray-700">言語</label>
             <select id="ol_language" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-              <option value="">指定しない</option>
               <option value="jpn">日本語</option>
               <option value="en">English</option>
             </select>
           </div>
+          <label for="ol_keyword" class="block text-sm font-medium text-gray-700">キーワード</label>
+          <input id="ol_keyword" type="text"
+                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                 placeholder="例：量子情報 / Quantum information" />
         </div>
 
         <div>
@@ -636,6 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const selectedIsbnEl = document.getElementById('selected_isbn');
 
   const langEl = document.getElementById('ol_language');
+  const searchSourceTitleEl = document.getElementById('ol_search_source_title');
   const SEARCH_URL = `{{ route('api.search_book') }}`;
   const PER_PAGE = 20;
 
@@ -643,6 +643,16 @@ document.addEventListener('DOMContentLoaded', function() {
   let lastParams = null;
 
   function norm(v) { return (v ?? '').toString().trim(); }
+
+  // 言語の選択に合わせて検索セクションの見出しを切り替える
+  function updateSearchSourceTitle() {
+    if (!searchSourceTitleEl) return;
+    searchSourceTitleEl.textContent = (norm(langEl?.value) === 'en')
+      ? 'Open Libraryで検索'
+      : '国立国会図書館サーチで検索';
+  }
+  langEl?.addEventListener('change', updateSearchSourceTitle);
+  updateSearchSourceTitle();
 
   function buildParams(page) {
     return {
@@ -835,7 +845,8 @@ document.addEventListener('DOMContentLoaded', function() {
     authorEl.value = '';
     yearEl.value = '';
     isbnEl.value = '';
-    if (langEl) langEl.value = '';
+    if (langEl) langEl.value = 'jpn';
+    updateSearchSourceTitle();
 
     if (selectedBookTitleEl) selectedBookTitleEl.value = '';
     if (selectedAuthorEl) selectedAuthorEl.value = '';
